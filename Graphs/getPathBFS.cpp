@@ -1,70 +1,50 @@
-/**
- * Created on: Tue, Jul 3, 2018 6:15 PM
-
- * @author: wikiabhi (Abhishek)
-*/
-
-// DFS & BFS Traversal for connected graphs
-
 #include <iostream>
+#include <map>
 #include <queue>
+#include <vector>
 using namespace std;
 
-void printDFS(int** edges, int n, int start, bool* visited){
-    cout << start << endl;
-    visited[start] = true;
-
-    for(int i=0; i<n; i++){
-        if(i == start){
-            continue;
-        }
-        if(edges[start][i] == 1){
-            if(visited[i]){
-                continue;
-            }
-            printDFS(edges, n, i, visited);
-        }
-    }
-}
-
-void printBFS(int** edges, int n, int start){
-    // Queue for pending Vertices
+void getPathBFS(int ** edges, int n, bool * visited, int start, int end){
+    map <int,int> pathMap;
     queue<int> pendingVertices;
+    // vector<int> path;
 
-    // Visited array 
-    bool* visited = new bool[n];
-    for(int i=0; i<n; i++){
-        visited[i] = false;
-    }
-
-    // Push the starting vertex to the queue and mark it as visited
     pendingVertices.push(start);
     visited[start] = true;
 
-
     while(!pendingVertices.empty()){
-        // Pop the front vertex in the queue
         int currentVertex = pendingVertices.front();
         pendingVertices.pop();
 
-        // Print current vertex
-        cout << currentVertex << " ";
-
-        // Push the adjacent vertices of the current vertex which are not visited yet and mark them visited
         for(int i=0; i<n; i++){
             if(i == currentVertex){
                 continue;
             }
             if(edges[currentVertex][i] == 1 && !visited[i]){
+                if(i == end){
+                    // create the path from map
+                    cout << end << " ";
+                    int previousVertex = pathMap[end];
+                    while(previousVertex != start){
+                        cout << previousVertex << " ";
+                        previousVertex = pathMap[previousVertex];
+                    }
+                    cout << start;
+                    return; 
+                }
+
                 pendingVertices.push(i);
+                pathMap.insert(make_pair(i, currentVertex));
                 visited[i] = true;
             }
         }
     }
-}
+
+    
+    return;
+} 
 
 int main(){
-    
     int n; // Number of vertices
     int e; // Number of edges
 
@@ -89,17 +69,24 @@ int main(){
         edges[s][f] = 1;
     }
 
-    bool* visited = new bool[n];
+    int start, end;
+    cin >> start >> end;
+
+    bool * visited = new bool[n];
     for(int i=0; i<n; i++){
         visited[i] = false;
-    }
-
-    // printDFS(edges, n, 0, visited);
-
-    printBFS(edges, n, 0);
+    } 
     
+  
+    getPathBFS(edges, n, visited, start, end);
+
+    // if(!path.empty()){
+    //     for(int i=0; i<path.size(); i++){
+    //        cout << path[i] << " ";
+    //     }
+    // }
+
     // Delete the memory allocations
-    delete[] visited;
     for(int i=0; i<n; i++){
         delete[] edges[i];
     }

@@ -4,14 +4,13 @@
  * @author: wikiabhi (Abhishek)
 */
 
-// DFS & BFS Traversal for connected graphs
+// DFS & BFS Traversal for connected and disconnected graphs as well
 
 #include <iostream>
 #include <queue>
 using namespace std;
-
 void printDFS(int** edges, int n, int start, bool* visited){
-    cout << start << endl;
+    cout << start << " ";
     visited[start] = true;
 
     for(int i=0; i<n; i++){
@@ -27,15 +26,9 @@ void printDFS(int** edges, int n, int start, bool* visited){
     }
 }
 
-void printBFS(int** edges, int n, int start){
+void printBFS(int** edges, int n, int start, bool* visited){
     // Queue for pending Vertices
     queue<int> pendingVertices;
-
-    // Visited array 
-    bool* visited = new bool[n];
-    for(int i=0; i<n; i++){
-        visited[i] = false;
-    }
 
     // Push the starting vertex to the queue and mark it as visited
     pendingVertices.push(start);
@@ -63,6 +56,37 @@ void printBFS(int** edges, int n, int start){
     }
 }
 
+void BFS(int ** edges, int n){
+    bool* visited = new bool[n];
+    for(int i=0; i<n; i++){
+        visited[i] = false;
+    }
+
+    for(int i=0; i<n; i++){
+        if(!visited[i]){
+            printBFS(edges, n, i, visited);
+        }
+    }
+    delete[] visited;
+}
+
+void DFS(int ** edges, int n){
+    bool* visited = new bool[n];
+    for(int i=0; i<n; i++){
+        visited[i] = false;
+    }
+
+    for(int i=0; i<n; i++){
+        if(!visited[i]){
+            printDFS(edges, n, i, visited);
+        }
+    }
+
+    delete[] visited;
+}
+
+
+
 int main(){
     
     int n; // Number of vertices
@@ -89,17 +113,14 @@ int main(){
         edges[s][f] = 1;
     }
 
-    bool* visited = new bool[n];
-    for(int i=0; i<n; i++){
-        visited[i] = false;
-    }
+    cout << "DFS: ";
+    DFS(edges, n );
+    cout << endl;
 
-    // printDFS(edges, n, 0, visited);
-
-    printBFS(edges, n, 0);
+    cout << "BFS: ";
+    BFS(edges, n );
     
     // Delete the memory allocations
-    delete[] visited;
     for(int i=0; i<n; i++){
         delete[] edges[i];
     }
