@@ -1,3 +1,18 @@
+/**
+ * Created on: Tue, Jul 3, 2018 9:22 PM
+
+ * @author: wikiabhi (Abhishek)
+*/
+
+/*
+Given an undirected graph G(V, E) and two vertices v1 and v2(as integers), 
+find and print the path from v1 to v2 (if exists). 
+Print nothing if there is no path between v1 and v2.
+Find the path using DFS and print the first path that you encountered.
+V is the number of vertices present in graph G and vertices are numbered from 0 to V-1.
+E is the number of edges present in graph G.
+Print the path in reverse order. That is, print v2 first, then intermediate vertices and v1 at last.
+*/
 
 #include <iostream>
 #include <vector>
