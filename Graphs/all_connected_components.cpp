@@ -1,8 +1,9 @@
 #include <iostream>
 #include <vector>
+#include <algorithm>
 using namespace std;
 
-void dfsTraversal(int ** edges, int n, int start, bool * visited, vector<int> subGraph){
+void dfsTraversal(int ** edges, int n, int start, bool * visited, vector<int> &subGraph){
     subGraph.push_back(start);
     visited[start] = true;
 
@@ -17,12 +18,15 @@ void dfsTraversal(int ** edges, int n, int start, bool * visited, vector<int> su
 }
 
 void connectedComponents(int ** edges, int n, bool * visited){
+
     for(int i=0; i<n; i++){
         if(!visited[i]){
             vector <int> subGraph;
             dfsTraversal(edges, n, i, visited, subGraph);
+            
+            sort(subGraph.begin(), subGraph.end());
 
-            for(int i=0; i< subGraph.size(); i++){
+            for(int i=0; i<subGraph.size(); i++){
                 cout << subGraph[i] << " ";
             }
             cout << endl;
@@ -62,7 +66,6 @@ int main(){
     } 
 
     connectedComponents(edges, n, visited);
-
 
     // Delete the memory allocations
     for(int i=0; i<n; i++){
